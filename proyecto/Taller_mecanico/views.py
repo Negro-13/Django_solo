@@ -39,3 +39,9 @@ def quienes_somos(request):
 
 def ubicacion_contacto(request):
     return render(request, 'Taller_mecanico/ubicacion_contacto.html')
+
+
+#Panel de administracion
+
+def clientes(request):
+    return render(request, 'Taller_mecanico/adminis/clientes.html')
