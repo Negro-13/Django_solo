@@ -13,6 +13,10 @@ urlpatterns = [
     path('ubicacion_contacto/', views.ubicacion_contacto, name='ubicacion_contacto'),
     
     #Paginas de administracion
-    
+    #Clientes
     path('administracion/clientes/', views.clientes, name='clientes'),
+    path('administracion/clientes/editar/<str:dni>/', views.editar_cliente, name='editar_cliente'),
+    path('administracion/clientes/eliminar/<str:dni>/', views.eliminar_cliente, name='eliminar_cliente'),
+
+    #Vehiculos
 ]

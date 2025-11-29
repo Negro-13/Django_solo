@@ -33,18 +33,63 @@ def clientes(request):
         direccion = request.POST.get("direccion")
         telefono = request.POST.get("telefono")
 
-        # Conexión a la base de datos
         conn = get_connection()
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO clientes (dni, nombre, apellido, direccion, telefono) VALUES (%s, %s, %s, %s, %s)",
+            "INSERT INTO Clientes (DNI, Nombre, Apellido, Direccion, Telefono) VALUES (%s, %s, %s, %s, %s)",
             (dni, nombre, apellido, direccion, telefono)
         )
         conn.commit()
         cursor.close()
         conn.close()
 
-        return redirect('clientes')  # Redirige para evitar reenvío de formulario
+        return redirect('clientes')
 
-    # Si no es POST, simplemente muestra la página
-    return render(request, 'Taller/adminis/clientes.html')
+    # Leer los datos de la tabla Clientes
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)  # Devuelve diccionarios
+    cursor.execute("SELECT * FROM Clientes")
+    clientes_db = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    return render(request, 'Taller/adminis/clientes/clientes.html', {"clientes": clientes_db})
+
+def editar_cliente(request, dni):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    
+    if request.method == "POST":
+        nombre = request.POST.get("nombre")
+        apellido = request.POST.get("apellido")
+        direccion = request.POST.get("direccion")
+        telefono = request.POST.get("telefono")
+        
+        cursor.execute(
+            "UPDATE Clientes SET Nombre=%s, Apellido=%s, Direccion=%s, Telefono=%s WHERE DNI=%s",
+            (nombre, apellido, direccion, telefono, dni)
+        )
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return redirect('clientes')
+    
+    # Obtener datos actuales del cliente
+    cursor.execute("SELECT * FROM Clientes WHERE DNI=%s", (dni,))
+    cliente = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    
+    return render(request, 'Taller/adminis/clientes/editar_cliente.html', {"cliente": cliente})
+
+
+def eliminar_cliente(request, dni):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM Clientes WHERE DNI=%s", (dni,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return redirect('clientes')
+
+#Panel de administracion de Vehiculos

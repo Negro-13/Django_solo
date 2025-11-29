@@ -41,12 +41,46 @@
 
     </div>
 
+    <!--Parte derecha -->
 
-
-    <div class="admin-box box-right">
-        <h4>Sección Derecha</h4>
-        <p>Contenido...</p>
+    <div class="admin-box box-right p-4">
+        <h4>Clientes Registrados</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>DNI</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.DNI }}</td>
+                    <td>{{ cliente.Nombre }}</td>
+                    <td>{{ cliente.Apellido }}</td>
+                    <td>{{ cliente.Direccion }}</td>
+                    <td>{{ cliente.Telefono }}</td>
+                    <td>
+                        <a href="{% url 'editar_cliente' cliente.DNI %}" class="btn btn-sm btn-warning">Editar</a>
+                        <a href="{% url 'eliminar_cliente' cliente.DNI %}" class="btn btn-sm btn-danger"
+                            onclick="return confirm('¿Estás seguro que quieres eliminar este cliente?');">
+                            Eliminar
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No hay clientes registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+
 
 </div>
 
