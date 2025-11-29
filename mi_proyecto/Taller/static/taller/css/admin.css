@@ -1,0 +1,236 @@
+/* ===== ESTILOS PARA EL PANEL DE ADMINISTRACIÓN ===== */
+
+/* Contenedor principal */
+.admin-panel {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Título del panel */
+.admin-panel h2 {
+    font-weight: 600;
+    color: #343a40;
+    margin-bottom: 1.5rem;
+}
+
+/* ===== TARJETAS DE SECCIÓN ===== */
+.admin-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.admin-card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.admin-card-body {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+}
+
+.admin-card-text {
+    color: #7f8c8d;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+}
+
+.admin-btn {
+    padding: 0.5rem 1.25rem;
+    font-weight: 500;
+    border-radius: 5px;
+    transition: all 0.2s ease;
+    align-self: flex-start;
+    background-color: #3498db;
+    border-color: #3498db;
+    color: white;
+}
+
+.admin-btn:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+    transform: translateY(-1px);
+}
+
+/* ===== ACCIONES RÁPIDAS ===== */
+.quick-actions {
+    margin-top: 2rem;
+}
+
+.quick-actions .card {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: none;
+}
+
+.quick-actions .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    font-weight: 600;
+    color: #495057;
+    padding: 0.75rem 1.25rem;
+}
+
+.quick-actions .btn {
+    margin: 0.25rem;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.quick-actions .btn-outline-success:hover {
+    background-color: #28a745;
+    color: white;
+}
+
+.quick-actions .btn-outline-info:hover {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.quick-actions .btn-outline-warning:hover {
+    background-color: #ffc107;
+    color: white;
+}
+
+.quick-actions .btn-outline-dark:hover {
+    background-color: #343a40;
+    color: white;
+}
+
+.quick-actions .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* ===== GRID DE ADMINISTRACIÓN (FORMULARIO + TABLA) ===== */
+.admin-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.admin-box {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    border: 1px solid #e9ecef;
+}
+
+.box-top {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #3498db, #2c3e50);
+    color: white;
+    padding: 1rem;
+    border-radius: 8px 8px 0 0;
+    margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+    font-weight: 600;
+}
+
+/* ===== FORMULARIOS ===== */
+.admin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.admin-form .form-label {
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 0.25rem;
+}
+
+.admin-form .form-control,
+.admin-form .form-select {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    padding: 0.5rem 0.75rem;
+    transition: border-color 0.2s ease;
+}
+
+.admin-form .form-control:focus,
+.admin-form .form-select:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+/* ===== TABLAS ===== */
+.admin-table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+}
+
+.admin-table th {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 500;
+    padding: 0.75rem;
+    vertical-align: middle;
+    border-top: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.admin-table td {
+    padding: 0.75rem;
+    vertical-align: middle;
+    border-top: 1px solid #dee2e6;
+}
+
+.admin-table tbody tr:hover {
+    background-color: rgba(52, 152, 219, 0.05);
+}
+
+/* Botones de acciones en tablas */
+.admin-table .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    margin-right: 0.25rem;
+    border-radius: 4px;
+}
+
+.admin-table .btn-warning {
+    background-color: #f39c12;
+    border-color: #f39c12;
+    color: white;
+}
+
+.admin-table .btn-danger {
+    background-color: #e74c3c;
+    border-color: #e74c3c;
+    color: white;
+}
+
+/* ===== RESPONSIVIDAD ===== */
+@media (max-width: 767.98px) {
+    .admin-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .box-top {
+        margin-bottom: 1rem;
+    }
+}

@@ -1,0 +1,35 @@
+{% extends 'Taller/base.html' %}
+{% block title %}Editar Mecánico{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Editar Mecánico</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="legajo" class="form-label">Legajo</label>
+            <input type="text" class="form-control" id="legajo" name="legajo" value="{{ mecanico.Legajo }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" value="{{ mecanico.Nombre }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="apellido" class="form-label">Apellido</label>
+            <input type="text" class="form-control" id="apellido" name="apellido" value="{{ mecanico.Apellido }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="rol" class="form-label">Rol</label>
+            <input type="text" class="form-control" id="rol" name="rol" value="{{ mecanico.Rol }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="estado" class="form-label">Estado</label>
+            <select class="form-select" id="estado" name="estado" required>
+                <option value="Activo" {% if mecanico.Estado == 'Activo' %}selected{% endif %}>Activo</option>
+                <option value="Inactivo" {% if mecanico.Estado == 'Inactivo' %}selected{% endif %}>Inactivo</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        <a href="{% url 'mecanicos' %}" class="btn btn-secondary">Volver</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'Taller/base.html' %}
+{% block title %}Repuestos - Administración{% endblock %}
+{% block content %}
+<div class="admin-grid">
+    <!-- Encabezado -->
+    <div class="admin-box box-top">
+        <h4>Gestión de Repuestos</h4>
+    </div>
+
+    <!-- Formulario para agregar repuesto -->
+    <div class="admin-box box-left p-4">
+        <h4 class="mb-3">Agregar Repuesto</h4>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="codigo_repuesto" class="form-label">Código de Repuesto</label>
+                <input type="text" class="form-control" id="codigo_repuesto" name="codigo_repuesto" required>
+            </div>
+            <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción</label>
+                <input type="text" class="form-control" id="descripcion" name="descripcion" required>
+            </div>
+            <div class="mb-3">
+                <label for="cant_rep_libre" class="form-label">Cantidad Libre</label>
+                <input type="number" class="form-control" id="cant_rep_libre" name="cant_rep_libre" required>
+            </div>
+            <div class="mb-3">
+                <label for="cant_rep_total" class="form-label">Cantidad Total</label>
+                <input type="number" class="form-control" id="cant_rep_total" name="cant_rep_total" required>
+            </div>
+            <div class="mb-3">
+                <label for="proveedor" class="form-label">Proveedor</label>
+                <select class="form-select" id="proveedor" name="proveedor" required>
+                    <option value="" selected disabled>Seleccione un proveedor</option>
+                    {% for proveedor in proveedores %}
+                    <option value="{{ proveedor.Cod_prov }}">{{ proveedor.Nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="precio" class="form-label">Precio</label>
+                <input type="number" step="0.01" class="form-control" id="precio" name="precio" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Agregar Repuesto</button>
+        </form>
+    </div>
+
+    <!-- Tabla de repuestos registrados -->
+    <div class="admin-box box-right p-4">
+        <h4>Repuestos Registrados</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>Libre</th>
+                    <th>Total</th>
+                    <th>Proveedor</th>
+                    <th>Precio</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for repuesto in repuestos %}
+                <tr>
+                    <td>{{ repuesto.Codigo_repuesto }}</td>
+                    <td>{{ repuesto.Descripcion }}</td>
+                    <td>{{ repuesto.Cant_rep_libre }}</td>
+                    <td>{{ repuesto.Cant_rep_total }}</td>
+                    <td>{{ repuesto.NombreProveedor }}</td>
+                    <td>${{ repuesto.Precio|floatformat:2 }}</td>
+                    <td>
+                        <a href="{% url 'editar_repuesto' repuesto.Codigo_repuesto %}" class="btn btn-sm btn-warning">Editar</a>
+                        <a href="{% url 'eliminar_repuesto' repuesto.Codigo_repuesto %}" class="btn btn-sm btn-danger"
+                           onclick="return confirm('¿Estás seguro que quieres eliminar este repuesto?');">
+                            Eliminar
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">No hay repuestos registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

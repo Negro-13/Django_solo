@@ -1,0 +1,92 @@
+{% extends 'Taller/base.html' %}
+{% block title %}Vehículos - Administración{% endblock %}
+
+{% block content %}
+<div class="admin-grid">
+    <!-- Encabezado -->
+    <div class="admin-box box-top">
+        <h4>Gestión de Vehículos</h4>
+    </div>
+
+    <!-- Formulario para agregar/editar vehículos -->
+    <div class="admin-box box-left p-4">
+        <h4 class="mb-3">{% if vehiculo %}Editar Vehículo{% else %}Agregar Vehículo{% endif %}</h4>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="patente" class="form-label">Patente</label>
+                <input type="text" class="form-control" id="patente" name="patente"
+                       value="{% if vehiculo %}{{ vehiculo.Patente }}{% endif %}"
+                       placeholder="Ingrese la patente" {% if vehiculo %}readonly{% endif %}>
+            </div>
+            <div class="mb-3">
+                <label for="dni" class="form-label">DNI Dueño</label>
+                <input type="text" class="form-control" id="dni" name="dni"
+                       value="{% if vehiculo %}{{ vehiculo.DNI }}{% endif %}"
+                       placeholder="Ingrese el DNI del dueño">
+            </div>
+            <div class="mb-3">
+                <label for="marca" class="form-label">Marca</label>
+                <input type="text" class="form-control" id="marca" name="marca"
+                       value="{% if vehiculo %}{{ vehiculo.Marca }}{% endif %}"
+                       placeholder="Ingrese la marca">
+            </div>
+            <div class="mb-3">
+                <label for="modelo" class="form-label">Modelo</label>
+                <input type="text" class="form-control" id="modelo" name="modelo"
+                       value="{% if vehiculo %}{{ vehiculo.Modelo }}{% endif %}"
+                       placeholder="Ingrese el modelo">
+            </div>
+            <div class="mb-3">
+                <label for="color" class="form-label">Color</label>
+                <input type="text" class="form-control" id="color" name="color"
+                       value="{% if vehiculo %}{{ vehiculo.Color }}{% endif %}"
+                       placeholder="Ingrese el color">
+            </div>
+            <button type="submit" class="btn btn-primary w-100">
+                {% if vehiculo %}Guardar Cambios{% else %}Agregar Vehículo{% endif %}
+            </button>
+        </form>
+    </div>
+
+    <!-- Tabla de vehículos registrados -->
+    <div class="admin-box box-right p-4">
+        <h4>Vehículos Registrados</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Patente</th>
+                    <th>DNI Dueño</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Color</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vehiculo in vehiculos %}
+                <tr>
+                    <td>{{ vehiculo.Patente }}</td>
+                    <td>{{ vehiculo.DNI }}</td>
+                    <td>{{ vehiculo.Marca }}</td>
+                    <td>{{ vehiculo.Modelo }}</td>
+                    <td>{{ vehiculo.Color }}</td>
+                    <td>
+                        <a href="{% url 'editar_vehiculo' vehiculo.Patente %}" class="btn btn-sm btn-warning">Editar</a>
+                        <a href="{% url 'eliminar_vehiculo' vehiculo.Patente %}"
+                           class="btn btn-sm btn-danger"
+                           onclick="return confirm('¿Estás seguro que quieres eliminar este vehículo?');">
+                            Eliminar
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No hay vehículos registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

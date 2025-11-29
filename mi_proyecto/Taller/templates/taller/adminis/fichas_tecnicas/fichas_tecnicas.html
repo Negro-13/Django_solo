@@ -1,0 +1,90 @@
+{% extends 'Taller/base.html' %}
+{% block title %}Fichas Técnicas - Administración{% endblock %}
+{% block content %}
+<div class="admin-grid">
+    <!-- Encabezado -->
+    <div class="admin-box box-top">
+        <h4>Gestión de Fichas Técnicas</h4>
+    </div>
+
+    <!-- Formulario para agregar ficha técnica -->
+    <div class="admin-box box-left p-4">
+        <h4 class="mb-3">Agregar Ficha Técnica</h4>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="cod_cliente" class="form-label">Cliente</label>
+                <select class="form-select" id="cod_cliente" name="cod_cliente" required>
+                    <option value="" selected disabled>Seleccione un cliente</option>
+                    {% for cliente in clientes %}
+                    <option value="{{ cliente.DNI }}">
+                        {{ cliente.DNI }} - {{ cliente.Nombre }} {{ cliente.Apellido }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="vehiculo" class="form-label">Vehículo</label>
+                <select class="form-select" id="vehiculo" name="vehiculo" required>
+                    <option value="" selected disabled>Seleccione un vehículo</option>
+                    {% for vehiculo in vehiculos %}
+                    <option value="{{ vehiculo.Patente }}">
+                        {{ vehiculo.Patente }} - {{ vehiculo.Marca }} {{ vehiculo.Modelo }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="subtotal" class="form-label">Subtotal</label>
+                <input type="number" step="0.01" class="form-control" id="subtotal" name="subtotal" required>
+            </div>
+            <div class="mb-3">
+                <label for="mano_obra" class="form-label">Mano de Obra</label>
+                <input type="number" step="0.01" class="form-control" id="mano_obra" name="mano_obra" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Agregar Ficha Técnica</button>
+        </form>
+    </div>
+
+    <!-- Tabla de fichas técnicas registradas -->
+    <div class="admin-box box-right p-4">
+        <h4>Fichas Técnicas Registradas</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nro Ficha</th>
+                    <th>Cliente</th>
+                    <th>Vehículo</th>
+                    <th>Subtotal</th>
+                    <th>Mano de Obra</th>
+                    <th>Total General</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ficha in fichas %}
+                <tr>
+                    <td>{{ ficha.nro_ficha }}</td>
+                    <td>{{ ficha.Nombre }} {{ ficha.Apellido }}</td>
+                    <td>{{ ficha.vehiculo }} - {{ ficha.Marca }} {{ ficha.Modelo }}</td>
+                    <td>${{ ficha.subtotal|floatformat:2 }}</td>
+                    <td>${{ ficha.mano_obra|floatformat:2 }}</td>
+                    <td>${{ ficha.total_general|floatformat:2 }}</td>
+                    <td>
+                        <a href="{% url 'editar_ficha_tecnica' ficha.nro_ficha %}" class="btn btn-sm btn-warning">Editar</a>
+                        <a href="{% url 'eliminar_ficha_tecnica' ficha.nro_ficha %}" class="btn btn-sm btn-danger"
+                           onclick="return confirm('¿Estás seguro que quieres eliminar esta ficha técnica?');">
+                            Eliminar
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">No hay fichas técnicas registradas.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

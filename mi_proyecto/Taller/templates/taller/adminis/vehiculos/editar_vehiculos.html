@@ -1,0 +1,31 @@
+{% extends 'Taller/base.html' %}
+{% block title %}Editar Vehículo{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Editar Vehículo</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">Patente</label>
+            <input type="text" class="form-control" name="patente" value="{{ vehiculo.Patente }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">DNI Dueño</label>
+            <input type="text" class="form-control" name="dni" value="{{ vehiculo.DNI }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Marca</label>
+            <input type="text" class="form-control" name="marca" value="{{ vehiculo.Marca }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Modelo</label>
+            <input type="text" class="form-control" name="modelo" value="{{ vehiculo.Modelo }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Color</label>
+            <input type="text" class="form-control" name="color" value="{{ vehiculo.Color }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</div>
+{% endblock %}

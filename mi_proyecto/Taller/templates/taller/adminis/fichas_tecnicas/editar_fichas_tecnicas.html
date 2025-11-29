@@ -1,0 +1,28 @@
+{% extends 'Taller/base.html' %}
+{% block title %}Editar Ficha Técnica{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Editar Ficha Técnica</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="cliente" class="form-label">Cliente</label>
+            <input type="text" class="form-control" id="cliente" value="{{ ficha.Nombre }} {{ ficha.Apellido }}" disabled>
+        </div>
+        <div class="mb-3">
+            <label for="vehiculo" class="form-label">Vehículo</label>
+            <input type="text" class="form-control" id="vehiculo" value="{{ ficha.vehiculo }} - {{ ficha.Marca }} {{ ficha.Modelo }}" disabled>
+        </div>
+        <div class="mb-3">
+            <label for="subtotal" class="form-label">Subtotal</label>
+            <input type="number" step="0.01" class="form-control" id="subtotal" name="subtotal" value="{{ ficha.subtotal }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="mano_obra" class="form-label">Mano de Obra</label>
+            <input type="number" step="0.01" class="form-control" id="mano_obra" name="mano_obra" value="{{ ficha.mano_obra }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        <a href="{% url 'fichas_tecnicas' %}" class="btn btn-secondary">Volver</a>
+    </form>
+</div>
+{% endblock %}

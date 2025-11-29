@@ -1,0 +1,81 @@
+{% extends 'Taller/base.html' %}
+{% block title %}Mecánicos - Administración{% endblock %}
+{% block content %}
+<div class="admin-grid">
+    <!-- Encabezado -->
+    <div class="admin-box box-top">
+        <h4>Gestión de Mecánicos</h4>
+    </div>
+
+    <!-- Formulario para agregar mecánico -->
+    <div class="admin-box box-left p-4">
+        <h4 class="mb-3">Agregar Mecánico</h4>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="legajo" class="form-label">Legajo</label>
+                <input type="text" class="form-control" id="legajo" name="legajo" required>
+            </div>
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" required>
+            </div>
+            <div class="mb-3">
+                <label for="apellido" class="form-label">Apellido</label>
+                <input type="text" class="form-control" id="apellido" name="apellido" required>
+            </div>
+            <div class="mb-3">
+                <label for="rol" class="form-label">Rol</label>
+                <input type="text" class="form-control" id="rol" name="rol" required>
+            </div>
+            <div class="mb-3">
+                <label for="estado" class="form-label">Estado</label>
+                <select class="form-select" id="estado" name="estado" required>
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Agregar Mecánico</button>
+        </form>
+    </div>
+
+    <!-- Tabla de mecánicos registrados -->
+    <div class="admin-box box-right p-4">
+        <h4>Mecánicos Registrados</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Legajo</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Rol</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mecanico in mecanicos %}
+                <tr>
+                    <td>{{ mecanico.Legajo }}</td>
+                    <td>{{ mecanico.Nombre }}</td>
+                    <td>{{ mecanico.Apellido }}</td>
+                    <td>{{ mecanico.Rol }}</td>
+                    <td>{{ mecanico.Estado }}</td>
+                    <td>
+                        <a href="{% url 'editar_mecanico' mecanico.Legajo %}" class="btn btn-sm btn-warning">Editar</a>
+                        <a href="{% url 'eliminar_mecanico' mecanico.Legajo %}" class="btn btn-sm btn-danger"
+                           onclick="return confirm('¿Estás seguro que quieres eliminar este mecánico?');">
+                            Eliminar
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No hay mecánicos registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

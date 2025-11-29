@@ -1,10 +1,105 @@
 {% extends 'Taller/base.html' %}
-
 {% block title %}Administración - Taller Mecánico{% endblock %}
-
 {% block content %}
-<div class="container mt-5">
-    <h2>Panel de Administración</h2>
-    
+<div class="container admin-panel">
+    <h2 class="mb-4">Panel de Administración</h2>
+
+    <!-- Tarjetas para cada sección de administración -->
+    <div class="row admin-cards-grid g-4">
+        <!-- Clientes -->
+        <div class="admin-card">
+        <div class="admin-card-body">
+            <h5 class="admin-card-title">Clientes</h5>
+            <p class="admin-card-text">Gestionar clientes: agregar, editar o eliminar.</p>
+            <a href="{% url 'clientes' %}" class="btn admin-btn">Ir a Clientes</a>
+        </div>
+    </div>
+
+        <!-- Vehículos -->
+        <div class="admin-card">
+        <div class="admin-card-body">
+            <h5 class="admin-card-title">Vehículos</h5>
+            <p class="admin-card-text">Gestionar vehículos: agregar, editar o eliminar.</p>
+            <a href="{% url 'vehiculos' %}" class="btn admin-btn">Ir a Vehículos</a>
+        </div>
+    </div>
+
+        <!-- Ficha Técnica -->
+    <div class="admin-cards-grid">
+    <div class="admin-card">
+        <div class="admin-card-body">
+                    <h5 class="admin-card-title">Ficha Técnica</h5>
+                    <p class="admin-card-text">Gestionar fichas técnicas: crear, editar o eliminar.</p>
+                    <a href="{% url 'fichas_tecnicas' %}" class="btn admin-btn admin-btn-primary">Ir a Fichas Técnicas</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mecánicos -->
+        <div class="admin-cards-grid">
+    <div class="admin-card">
+        <div class="admin-card-body">
+                    <h5 class="admin-card-title">Mecánicos</h5>
+                    <p class="admin-card-text">Gestionar mecánicos: agregar, editar o eliminar.</p>
+                    <a href="{% url 'mecanicos' %}" class="btn admin-btn admin-btn-primary">Ir a Mecánicos</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Repuestos -->
+    <div class="admin-cards-grid">
+    <div class="admin-card">
+        <div class="admin-card-body">
+                    <h5 class="admin-card-title">Repuestos</h5>
+                    <p class="admin-card-text">Gestionar repuestos: agregar, editar o eliminar.</p>
+                    <a href="{% url 'repuestos' %}" class="btn admin-btn admin-btn-primary">Ir a Repuestos</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Proveedores -->
+    <div class="admin-cards-grid">
+    <div class="admin-card">
+        <div class="admin-card-body">
+                    <h5 class="admin-card-title">Proveedores</h5>
+                    <p class="admin-card-text">Gestionar proveedores: agregar, editar o eliminar.</p>
+                    <a href="{% url 'proveedores' %}" class="btn admin-btn admin-btn-primary">Ir a Proveedores</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Presupuestos -->
+    <div class="admin-cards-grid">
+    <div class="admin-card">
+        <div class="admin-card-body">
+                    <h5 class="admin-card-title">Presupuestos</h5>
+                    <p class="admin-card-text">Gestionar presupuestos: crear, editar o eliminar.</p>
+                    <a href="{% url 'presupuesto' %}" class="btn admin-btn admin-btn-primary">Ir a Presupuestos</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de acciones rápidas -->
+    <div class="row quick-actions">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Acciones Rápidas</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-wrap justify-content-center justify-content-md-start">
+                        <a href="{% url 'clientes' %}" class="btn btn-outline-success me-2 mb-2">Agregar Cliente</a>
+                        <a href="{% url 'vehiculos' %}" class="btn btn-outline-info me-2 mb-2">Agregar Vehículo</a>
+                        <a href="{% url 'fichas_tecnicas' %}" class="btn btn-outline-dark me-2 mb-2">Agregar Ficha Técnica</a>
+                        <a href="{% url 'mecanicos' %}" class="btn btn-outline-success me-2 mb-2">Agregar Mecánico</a>
+                        <a href="{% url 'repuestos' %}" class="btn btn-outline-warning me-2 mb-2">Agregar Repuesto</a>
+                        <a href="{% url 'proveedores' %}" class="btn btn-outline-danger me-2 mb-2">Agregar Proveedor</a>
+                        <a href="{% url 'presupuesto' %}" class="btn btn-outline-primary me-2 mb-2">Crear Presupuesto</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

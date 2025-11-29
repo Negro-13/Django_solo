@@ -1,0 +1,78 @@
+{% extends 'Taller/base.html' %}
+{% block title %}Proveedores - Administración{% endblock %}
+{% block content %}
+<div class="admin-grid">
+    <!-- Encabezado -->
+    <div class="admin-box box-top">
+        <h4>Gestión de Proveedores</h4>
+    </div>
+
+    <!-- Formulario para agregar proveedor -->
+    <div class="admin-box box-left p-4">
+        <h4 class="mb-3">Agregar Proveedor</h4>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="cod_prov" class="form-label">Código de Proveedor</label>
+                <input type="text" class="form-control" id="cod_prov" name="cod_prov" required>
+            </div>
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" required>
+            </div>
+            <div class="mb-3">
+                <label for="telefono" class="form-label">Teléfono</label>
+                <input type="text" class="form-control" id="telefono" name="telefono" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="direccion" class="form-label">Dirección</label>
+                <input type="text" class="form-control" id="direccion" name="direccion" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Agregar Proveedor</button>
+        </form>
+    </div>
+
+    <!-- Tabla de proveedores registrados -->
+    <div class="admin-box box-right p-4">
+        <h4>Proveedores Registrados</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Dirección</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for proveedor in proveedores %}
+                <tr>
+                    <td>{{ proveedor.Cod_prov }}</td>
+                    <td>{{ proveedor.Nombre }}</td>
+                    <td>{{ proveedor.Telefono }}</td>
+                    <td>{{ proveedor.Email }}</td>
+                    <td>{{ proveedor.Direccion }}</td>
+                    <td>
+                        <a href="{% url 'editar_proveedor' proveedor.Cod_prov %}" class="btn btn-sm btn-warning">Editar</a>
+                        <a href="{% url 'eliminar_proveedor' proveedor.Cod_prov %}" class="btn btn-sm btn-danger"
+                           onclick="return confirm('¿Estás seguro que quieres eliminar este proveedor?');">
+                            Eliminar
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No hay proveedores registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

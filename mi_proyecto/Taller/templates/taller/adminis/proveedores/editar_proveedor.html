@@ -1,0 +1,32 @@
+{% extends 'Taller/base.html' %}
+{% block title %}Editar Proveedor{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Editar Proveedor</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="cod_prov" class="form-label">Código de Proveedor</label>
+            <input type="text" class="form-control" id="cod_prov" name="cod_prov" value="{{ proveedor.Cod_prov }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" value="{{ proveedor.Nombre }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="telefono" class="form-label">Teléfono</label>
+            <input type="text" class="form-control" id="telefono" name="telefono" value="{{ proveedor.Telefono }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ proveedor.Email }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="direccion" class="form-label">Dirección</label>
+            <input type="text" class="form-control" id="direccion" name="direccion" value="{{ proveedor.Direccion }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        <a href="{% url 'proveedores' %}" class="btn btn-secondary">Volver</a>
+    </form>
+</div>
+{% endblock %}
