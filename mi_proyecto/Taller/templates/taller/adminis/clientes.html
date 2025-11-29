@@ -1,0 +1,50 @@
+{% extends 'Taller/base.html' %}
+
+{% block title %}Administración - Taller Mecánico{% endblock %}
+
+{% block content %}
+
+<div class="admin-grid">
+
+    <div class="admin-box box-top">
+        <h4>Panel de Administracion</h4>
+
+    </div>
+
+    <div class="admin-box box-left p-4">
+    <h4 class="mb-3">Sección Izquierda</h4>
+    <form>
+        <div class="mb-3">
+            <label for="dni" class="form-label">DNI</label>
+            <input type="text" class="form-control" id="dni" name="dni" placeholder="Ingrese su DNI">
+        </div>
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese su nombre">
+        </div>
+        <div class="mb-3">
+            <label for="apellido" class="form-label">Apellido</label>
+            <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Ingrese su apellido">
+        </div>
+        <div class="mb-3">
+            <label for="direccion" class="form-label">Dirección</label>
+            <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Ingrese su dirección">
+        </div>
+        <div class="mb-3">
+            <label for="telefono" class="form-label">Teléfono</label>
+            <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Ingrese su teléfono">
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Agregar</button>
+    </form>
+</div>
+
+
+
+    <div class="admin-box box-right">
+        <h4>Sección Derecha</h4>
+        <p>Contenido...</p>
+    </div>
+
+</div>
+
+{% endblock %}

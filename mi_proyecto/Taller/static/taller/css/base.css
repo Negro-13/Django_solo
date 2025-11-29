@@ -1,0 +1,52 @@
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;   /* 1 columna pequeña + 1 grande */
+    grid-template-rows: auto auto;     /* 2 filas */
+    grid-template-areas:
+        "top top"
+        "left right";
+    width: 100%;
+    height: auto;
+    gap: 0; /* SIN separación */
+}
+
+/* Caja superior (fila 1) */
+.box-top {
+    grid-area: top;
+}
+
+/* Caja pequeña izquierda (fila 2 col 1) */
+.box-left {
+    grid-area: left;
+}
+
+/* Caja grande derecha (fila 2 col 2) */
+.box-right {
+    grid-area: right;
+}
+
+/* Estilos generales */
+.admin-box {
+    background: #ffffff;
+    color: rgb(0, 0, 0);
+    padding: 20px;
+    border: 2px solid black; /* para que se parezca al dibujo */
+    min-height: 200px;
+}
+
+
+
+/*Imagenes*/
+.carousel-item img {
+    width: 100%;
+    height: 700px;
+    object-fit: cover;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
