@@ -9,7 +9,7 @@ DB_CONFIG = {
     'host': 'localhost',
     'port': '3306',
     'user': 'root',
-    'password': '',
+    'password': 'root123',
     'database': 'Taller_Mecanico_dj'
 }
 

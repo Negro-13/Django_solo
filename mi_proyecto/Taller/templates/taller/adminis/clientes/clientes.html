@@ -5,11 +5,19 @@
 {% block content %}
 
 <div class="admin-grid">
-
+    <!-- Encabezado -->
     <div class="admin-box box-top">
-        <h4>Panel de Administracion</h4>
-
+        <h4>Gestión de clientes</h4>
+        <div class="navigation-buttons" style="display: flex; justify-content: center; gap: 10px; margin-top: 15px;">
+        <a href="{% url 'clientes' %}" style="background-color: #2980b9; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; font-weight: bold;">Clientes</a>
+        <a href="{% url 'vehiculos' %}" style="background-color: #2980b9; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; font-weight: bold;">Vehículos</a>
+        <a href="{% url 'fichas_tecnicas' %}" style="background-color: #2980b9; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; font-weight: bold;">Fichas Técnicas</a>
+        <a href="{% url 'mecanicos' %}" style="background-color: #2980b9; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; font-weight: bold;">Mecánicos</a>
+        <a href="{% url 'repuestos' %}" style="background-color: #2980b9; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; font-weight: bold;">Repuestos</a>
+        <a href="{% url 'proveedores' %}" style="background-color: #2980b9; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; font-weight: bold;">Proveedores</a>
+        <a href="{% url 'presupuesto' %}" style="background-color: #2980b9; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; font-weight: bold;">Presupuestos</a>
     </div>
+</div>
 
     <div class="admin-box box-left p-4">
         <h4 class="mb-3">Sección Izquierda</h4>
