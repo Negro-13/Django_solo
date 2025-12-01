@@ -6,12 +6,63 @@ def pagina_principal(request):
     return render(request, 'Taller/pagina_principal.html')
 
 def login_view(request):
-    return render(request, 'Taller/login.html')
+    if request.method == "POST":
+        usuario = request.POST.get("usuario")
+        clave = request.POST.get("clave")
+
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT * FROM usuarios 
+            WHERE usuario = %s AND clave = %s
+        """, (usuario, clave))
+
+        user = cursor.fetchone()
+        conn.close()
+
+        if user:
+            response = redirect("administracion")   # ← A dónde redirige si inicia sesión
+            response.set_cookie("usuario", usuario)
+            response.set_cookie("rol", user["rol"])
+            return response
+        else:
+            return render(request, "Taller/login.html", {
+                "error": "Usuario o clave incorrectos"
+            })
+
+    return render(request, "Taller/login.html")
 
 def register(request):
-    return render(request, 'Taller/register.html')
+    if request.method == "POST":
+        usuario = request.POST.get("usuario")
+        clave = request.POST.get("clave")
+
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "INSERT INTO usuarios (usuario, clave) VALUES (%s, %s)",
+            (usuario, clave)
+        )
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return redirect("login")
+
+    return render(request, "Taller/register.html")
+
+def logout_view(request):
+    response = redirect("login")
+    response.delete_cookie("usuario")
+    response.delete_cookie("rol")
+    return response
 
 def administracion(request):
+    if not request.COOKIES.get("usuario"):
+        return redirect("login")
     return render(request, 'Taller/administracion.html')
 
 def presupuesto(request):
@@ -26,6 +77,9 @@ def ubicacion_contacto(request):
 
 # Panel de administración: CRUD de clientes
 def clientes(request):
+    if not request.COOKIES.get("usuario"):
+        return redirect("login")
+
     if request.method == "POST":
         dni = request.POST.get("dni")
         nombre = request.POST.get("nombre")
@@ -56,6 +110,9 @@ def clientes(request):
     return render(request, 'Taller/adminis/clientes/clientes.html', {"clientes": clientes_db})
 
 def editar_cliente(request, dni):
+    if not request.COOKIES.get("usuario"):
+        return redirect("login")
+
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     
@@ -84,6 +141,9 @@ def editar_cliente(request, dni):
 
 
 def eliminar_cliente(request, dni):
+    if not request.COOKIES.get("usuario"):
+        return redirect("login")
+
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute("DELETE FROM Clientes WHERE DNI=%s", (dni,))
@@ -97,6 +157,8 @@ def eliminar_cliente(request, dni):
 def vehiculos(request):
     # Si se está editando un vehículo, pasa el objeto 'vehiculo' al template
     vehiculo = None
+    if not request.COOKIES.get("usuario"):
+        return redirect("login")
     if request.method == "POST":
         patente = request.POST.get("patente")
         dni = request.POST.get("dni")
@@ -124,6 +186,9 @@ def vehiculos(request):
     return render(request, 'Taller/adminis/vehiculos/vehiculos.html', {"vehiculos": vehiculos_db, "vehiculo": vehiculo})
 
 def editar_vehiculo(request, patente):
+    if not request.COOKIES.get("usuario"):
+        return redirect("login")
+
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
@@ -152,6 +217,9 @@ def editar_vehiculo(request, patente):
 
 
 def eliminar_vehiculo(request, patente):
+    if not request.COOKIES.get("usuario"):
+        return redirect("login")
+
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute("DELETE FROM Vehiculos WHERE Patente=%s", (patente,))
@@ -161,6 +229,8 @@ def eliminar_vehiculo(request, patente):
     return redirect('vehiculos')
 # Panel de administración: CRUD de fichas técnicas
 def fichas_tecnicas(request):
+    if not request.COOKIES.get("usuario"):
+        return redirect("login")
     if request.method == "POST":
         cod_cliente = request.POST.get("cod_cliente")
         vehiculo = request.POST.get("vehiculo")
@@ -209,6 +279,9 @@ def fichas_tecnicas(request):
     })
 
 def editar_ficha_tecnica(request, nro_ficha):
+    if not request.COOKIES.get("usuario"):
+        return redirect("login")
+
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
@@ -243,6 +316,9 @@ def editar_ficha_tecnica(request, nro_ficha):
     return render(request, 'Taller/adminis/fichas_tecnicas/editar_ficha_tecnica.html', {"ficha": ficha})
 
 def eliminar_ficha_tecnica(request, nro_ficha):
+    if not request.COOKIES.get("usuario"):
+        return redirect("login")
+
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute("DELETE FROM ficha_tecnica WHERE nro_ficha=%s", (nro_ficha,))
@@ -252,6 +328,8 @@ def eliminar_ficha_tecnica(request, nro_ficha):
     return redirect('fichas_tecnicas')
 # Panel de administración: CRUD de mecánicos
 def mecanicos(request):
+    if not request.COOKIES.get("usuario"):
+        return redirect("login")
     if request.method == "POST":
         legajo = request.POST.get("legajo")
         nombre = request.POST.get("nombre")
@@ -281,6 +359,9 @@ def mecanicos(request):
     return render(request, 'Taller/adminis/mecanicos/mecanicos.html', {"mecanicos": mecanicos_db})
 
 def editar_mecanico(request, legajo):
+    if not request.COOKIES.get("usuario"):
+        return redirect("login")
+
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
@@ -308,6 +389,9 @@ def editar_mecanico(request, legajo):
     return render(request, 'Taller/adminis/mecanicos/editar_mecanico.html', {"mecanico": mecanico})
 
 def eliminar_mecanico(request, legajo):
+    if not request.COOKIES.get("usuario"):
+        return redirect("login")
+
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute("DELETE FROM Mecanicos WHERE Legajo=%s", (legajo,))
@@ -317,6 +401,8 @@ def eliminar_mecanico(request, legajo):
     return redirect('mecanicos')
 # Panel de administración: CRUD de proveedores
 def proveedores(request):
+    if not request.COOKIES.get("usuario"):
+        return redirect("login")
     if request.method == "POST":
         cod_prov = request.POST.get("cod_prov")
         nombre = request.POST.get("nombre")
@@ -346,6 +432,9 @@ def proveedores(request):
     return render(request, 'Taller/adminis/proveedores/proveedores.html', {"proveedores": proveedores_db})
 
 def editar_proveedor(request, cod_prov):
+    if not request.COOKIES.get("usuario"):
+        return redirect("login")
+
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
@@ -373,6 +462,9 @@ def editar_proveedor(request, cod_prov):
     return render(request, 'Taller/adminis/proveedores/editar_proveedor.html', {"proveedor": proveedor})
 
 def eliminar_proveedor(request, cod_prov):
+    if not request.COOKIES.get("usuario"):
+        return redirect("login")
+
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute("DELETE FROM Proveedores WHERE Cod_prov=%s", (cod_prov,))
@@ -382,6 +474,8 @@ def eliminar_proveedor(request, cod_prov):
     return redirect('proveedores')
 # Panel de administración: CRUD de repuestos
 def repuestos(request):
+    if not request.COOKIES.get("usuario"):
+        return redirect("login")
     if request.method == "POST":
         codigo_repuesto = request.POST.get("codigo_repuesto")
         descripcion = request.POST.get("descripcion")
@@ -425,6 +519,9 @@ def repuestos(request):
     })
 
 def editar_repuesto(request, codigo_repuesto):
+    if not request.COOKIES.get("usuario"):
+        return redirect("login")
+
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
@@ -467,6 +564,9 @@ def editar_repuesto(request, codigo_repuesto):
     })
 
 def eliminar_repuesto(request, codigo_repuesto):
+    if not request.COOKIES.get("usuario"):
+        return redirect("login")
+
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute("DELETE FROM Stock WHERE Codigo_repuesto=%s", (codigo_repuesto,))
