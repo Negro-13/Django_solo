@@ -45,8 +45,8 @@ ROOT_URLCONF = 'mi_proyecto.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "templates"],  # <-- carpeta global de templates
-        'APP_DIRS': True,                  # busca templates dentro de cada app
+        'DIRS': [BASE_DIR / "templates"],  
+        'APP_DIRS': True,                  
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
@@ -60,11 +60,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mi_proyecto.wsgi.application'
 
 
-# Database
-# Para tu CRUD con MySQL usando MySQL Connector directo, esto se puede ignorar
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # se puede dejar así
+        'ENGINE': 'django.db.backends.sqlite3',  #
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
@@ -115,3 +113,5 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # Default primary key field type
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+

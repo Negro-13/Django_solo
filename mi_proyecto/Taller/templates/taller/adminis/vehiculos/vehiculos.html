@@ -25,32 +25,32 @@
             <div class="mb-3">
                 <label for="patente" class="form-label">Patente</label>
                 <input type="text" class="form-control" id="patente" name="patente"
-                       value="{% if vehiculo %}{{ vehiculo.Patente }}{% endif %}"
-                       placeholder="Ingrese la patente" {% if vehiculo %}readonly{% endif %}>
+                    value="{% if vehiculo %}{{ vehiculo.Patente }}{% endif %}"
+                    placeholder="Ingrese la patente" {% if vehiculo %}readonly{% endif %}>
             </div>
             <div class="mb-3">
                 <label for="dni" class="form-label">DNI Dueño</label>
                 <input type="text" class="form-control" id="dni" name="dni"
-                       value="{% if vehiculo %}{{ vehiculo.DNI }}{% endif %}"
-                       placeholder="Ingrese el DNI del dueño">
+                    value="{% if vehiculo %}{{ vehiculo.DNI }}{% endif %}"
+                    placeholder="Ingrese el DNI del dueño">
             </div>
             <div class="mb-3">
                 <label for="marca" class="form-label">Marca</label>
                 <input type="text" class="form-control" id="marca" name="marca"
-                       value="{% if vehiculo %}{{ vehiculo.Marca }}{% endif %}"
-                       placeholder="Ingrese la marca">
+                    value="{% if vehiculo %}{{ vehiculo.Marca }}{% endif %}"
+                    placeholder="Ingrese la marca">
             </div>
             <div class="mb-3">
                 <label for="modelo" class="form-label">Modelo</label>
                 <input type="text" class="form-control" id="modelo" name="modelo"
-                       value="{% if vehiculo %}{{ vehiculo.Modelo }}{% endif %}"
-                       placeholder="Ingrese el modelo">
+                    value="{% if vehiculo %}{{ vehiculo.Modelo }}{% endif %}"
+                    placeholder="Ingrese el modelo">
             </div>
             <div class="mb-3">
                 <label for="color" class="form-label">Color</label>
                 <input type="text" class="form-control" id="color" name="color"
-                       value="{% if vehiculo %}{{ vehiculo.Color }}{% endif %}"
-                       placeholder="Ingrese el color">
+                    value="{% if vehiculo %}{{ vehiculo.Color }}{% endif %}"
+                    placeholder="Ingrese el color">
             </div>
             <button type="submit" class="btn btn-primary w-100">
                 {% if vehiculo %}Guardar Cambios{% else %}Agregar Vehículo{% endif %}
@@ -83,8 +83,8 @@
                     <td>
                         <a href="{% url 'editar_vehiculo' vehiculo.Patente %}" class="btn btn-sm btn-warning">Editar</a>
                         <a href="{% url 'eliminar_vehiculo' vehiculo.Patente %}"
-                           class="btn btn-sm btn-danger"
-                           onclick="return confirm('¿Estás seguro que quieres eliminar este vehículo?');">
+                        class="btn btn-sm btn-danger"
+                        onclick="return confirm('¿Estás seguro que quieres eliminar este vehículo?');">
                             Eliminar
                         </a>
                     </td>
@@ -94,6 +94,12 @@
                     <td colspan="6">No hay vehículos registrados.</td>
                 </tr>
                 {% endfor %}
+                <form method="GET" class="mb-3 d-flex gap-2">
+    <input type="text" name="q" class="form-control" placeholder="Buscar vehículo por Patente, DNI, Marca o Modelo"           value="{{ request.GET.q }}">
+    <button type="submit" class="btn btn-primary">Buscar</button>
+    <a href="{% url 'vehiculos' %}" class="btn btn-secondary">Limpiar</a>
+</form>
+
             </tbody>
         </table>
     </div>

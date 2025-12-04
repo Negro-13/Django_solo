@@ -24,5 +24,12 @@
         <button type="submit" class="btn btn-primary">Guardar Cambios</button>
         <a href="{% url 'fichas_tecnicas' %}" class="btn btn-secondary">Volver</a>
     </form>
+    <form method="GET" class="mb-3 d-flex gap-2">
+    <input type="text" name="q" class="form-control" placeholder="Buscar..."
+           value="{{ request.GET.q }}">
+    <button class="btn btn-primary">Buscar</button>
+    <a href="{% url request.resolver_match.url_name %}" class="btn btn-secondary">Limpiar</a>
+</form>
+
 </div>
 {% endblock %}

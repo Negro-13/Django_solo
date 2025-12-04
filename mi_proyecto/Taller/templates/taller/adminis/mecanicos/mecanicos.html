@@ -82,6 +82,13 @@
                     <td colspan="6">No hay mecánicos registrados.</td>
                 </tr>
                 {% endfor %}
+                <form method="GET" class="mb-3 d-flex gap-2">
+    <input type="text" name="q" class="form-control" placeholder="Buscar..."
+           value="{{ request.GET.q }}">
+    <button class="btn btn-primary">Buscar</button>
+    <a href="{% url request.resolver_match.url_name %}" class="btn btn-secondary">Limpiar</a>
+</form>
+
             </tbody>
         </table>
     </div>

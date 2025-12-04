@@ -81,7 +81,7 @@
                     <td>
                         <a href="{% url 'editar_repuesto' repuesto.Codigo_repuesto %}" class="btn btn-sm btn-warning">Editar</a>
                         <a href="{% url 'eliminar_repuesto' repuesto.Codigo_repuesto %}" class="btn btn-sm btn-danger"
-                           onclick="return confirm('¿Estás seguro que quieres eliminar este repuesto?');">
+                        onclick="return confirm('¿Estás seguro que quieres eliminar este repuesto?');">
                             Eliminar
                         </a>
                     </td>
@@ -91,6 +91,13 @@
                     <td colspan="7">No hay repuestos registrados.</td>
                 </tr>
                 {% endfor %}
+                <form method="GET" class="mb-3 d-flex gap-2">
+    <input type="text" name="q" class="form-control" placeholder="Buscar..."
+           value="{{ request.GET.q }}">
+    <button class="btn btn-primary">Buscar</button>
+    <a href="{% url request.resolver_match.url_name %}" class="btn btn-secondary">Limpiar</a>
+</form>
+
             </tbody>
         </table>
     </div>

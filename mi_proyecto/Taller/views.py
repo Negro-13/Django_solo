@@ -1,37 +1,52 @@
 from django.shortcuts import render, redirect
-from .db import get_connection
+import mysql.connector
+from .forms import LoginForm
 
+def get_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="root123",
+        database="Taller_Mecanico_dj",
+        port=3306
+    )
 # Páginas principales
 def pagina_principal(request):
     return render(request, 'Taller/pagina_principal.html')
 
 def login_view(request):
+    form = LoginForm()
+
     if request.method == "POST":
-        usuario = request.POST.get("usuario")
-        clave = request.POST.get("clave")
+        form = LoginForm(request.POST)
 
-        conn = get_connection()
-        cursor = conn.cursor(dictionary=True)
+        if form.is_valid():
+            usuario = form.cleaned_data["usuario"]
+            clave = form.cleaned_data["clave"]
 
-        cursor.execute("""
-            SELECT * FROM usuarios 
-            WHERE usuario = %s AND clave = %s
-        """, (usuario, clave))
+            conn = get_connection()
+            cursor = conn.cursor(dictionary=True)
 
-        user = cursor.fetchone()
-        conn.close()
+            cursor.execute("""
+                SELECT * FROM usuarios 
+                WHERE usuario = %s AND clave = %s
+            """, (usuario, clave))
 
-        if user:
-            response = redirect("administracion")   # ← A dónde redirige si inicia sesión
-            response.set_cookie("usuario", usuario)
-            response.set_cookie("rol", user["rol"])
-            return response
-        else:
-            return render(request, "Taller/login.html", {
-                "error": "Usuario o clave incorrectos"
-            })
+            user = cursor.fetchone()
+            conn.close()
 
-    return render(request, "Taller/login.html")
+            if user:
+                response = redirect("administracion")
+                response.set_cookie("usuario", usuario)
+                response.set_cookie("rol", user["rol"])
+                return response
+            else:
+                return render(request, "Taller/login.html", {
+                    "form": form,
+                    "error": "Usuario o clave incorrectos"
+                })
+
+    return render(request, "Taller/login.html", {"form": form})
 
 def register(request):
     if request.method == "POST":
@@ -102,8 +117,20 @@ def clientes(request):
     # Leer los datos de la tabla Clientes
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)  # Devuelve diccionarios
-    cursor.execute("SELECT * FROM Clientes")
+    q = request.GET.get("q")
+
+    if q:
+        cursor.execute("""
+        SELECT * FROM Clientes 
+        WHERE DNI LIKE %s 
+           OR Nombre LIKE %s 
+           OR Apellido LIKE %s
+    """, (f"%{q}%", f"%{q}%", f"%{q}%"))
+    else:
+        cursor.execute("SELECT * FROM Clientes")
+
     clientes_db = cursor.fetchall()
+
     cursor.close()
     conn.close()
 
@@ -174,13 +201,27 @@ def vehiculos(request):
         conn.commit()
         cursor.close()
         conn.close()
+        
         return redirect('vehiculos')
 
     # Leer los datos de la tabla Vehiculos
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM Vehiculos")
+    q = request.GET.get("q")
+
+    if q:
+        cursor.execute("""
+        SELECT * FROM Vehiculos
+        WHERE Patente LIKE %s
+           OR DNI LIKE %s
+           OR Marca LIKE %s
+           OR Modelo LIKE %s
+    """, (f"%{q}%", f"%{q}%", f"%{q}%", f"%{q}%"))
+    else:
+        cursor.execute("SELECT * FROM Vehiculos")
+
     vehiculos_db = cursor.fetchall()
+
     cursor.close()
     conn.close()
     return render(request, 'Taller/adminis/vehiculos/vehiculos.html', {"vehiculos": vehiculos_db, "vehiculo": vehiculo})
@@ -253,7 +294,22 @@ def fichas_tecnicas(request):
     # Leer los datos de la tabla ficha_tecnica
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("""
+    q = request.GET.get("q")
+
+    if q:
+        cursor.execute("""
+        SELECT f.nro_ficha, f.cod_cliente, f.vehiculo, f.subtotal, f.mano_obra, f.total_general,
+               c.Nombre, c.Apellido, v.Marca, v.Modelo
+        FROM ficha_tecnica f
+        JOIN Clientes c ON f.cod_cliente = c.DNI
+        JOIN Vehiculos v ON f.vehiculo = v.Patente
+        WHERE c.Nombre LIKE %s
+           OR c.Apellido LIKE %s
+           OR v.Marca LIKE %s
+           OR v.Modelo LIKE %s
+    """, (f"%{q}%", f"%{q}%", f"%{q}%", f"%{q}%"))
+    else:
+        cursor.execute("""
         SELECT f.nro_ficha, f.cod_cliente, f.vehiculo, f.subtotal, f.mano_obra, f.total_general,
                c.Nombre, c.Apellido, v.Marca, v.Modelo
         FROM ficha_tecnica f
@@ -261,7 +317,9 @@ def fichas_tecnicas(request):
         JOIN Vehiculos v ON f.vehiculo = v.Patente
         ORDER BY f.nro_ficha
     """)
+
     fichas_db = cursor.fetchall()
+
 
     # Obtener clientes y vehículos para el formulario
     cursor.execute("SELECT DNI, Nombre, Apellido FROM Clientes")
@@ -351,8 +409,21 @@ def mecanicos(request):
     # Leer los datos de la tabla Mecanicos
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM Mecanicos")
+    q = request.GET.get("q")
+
+    if q:
+        cursor.execute("""
+        SELECT * FROM Mecanicos
+        WHERE Legajo LIKE %s
+           OR Nombre LIKE %s
+           OR Apellido LIKE %s
+           OR Rol LIKE %s
+    """, (f"%{q}%", f"%{q}%", f"%{q}%", f"%{q}%"))
+    else:
+        cursor.execute("SELECT * FROM Mecanicos")
+
     mecanicos_db = cursor.fetchall()
+
     cursor.close()
     conn.close()
 
@@ -424,8 +495,21 @@ def proveedores(request):
     # Leer los datos de la tabla Proveedores
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM Proveedores")
+    q = request.GET.get("q")
+
+    if q:
+        cursor.execute("""
+        SELECT * FROM Proveedores
+        WHERE Cod_prov LIKE %s
+           OR Nombre LIKE %s
+           OR Telefono LIKE %s
+           OR Email LIKE %s
+    """, (f"%{q}%", f"%{q}%", f"%{q}%", f"%{q}%"))
+    else:
+        cursor.execute("SELECT * FROM Proveedores")
+
     proveedores_db = cursor.fetchall()
+
     cursor.close()
     conn.close()
 
@@ -543,13 +627,28 @@ def editar_repuesto(request, codigo_repuesto):
         return redirect('repuestos')
 
     # Obtener datos actuales del repuesto
-    cursor.execute("""
-        SELECT s.Codigo_repuesto, s.Descripcion, s.Cant_rep_libre, s.Cant_rep_total, s.Proveedor, s.Precio, p.Nombre as NombreProveedor
+    q = request.GET.get("q")
+
+    if q:
+        cursor.execute("""
+        SELECT s.Codigo_repuesto, s.Descripcion, s.Cant_rep_libre, s.Cant_rep_total, 
+               s.Proveedor, s.Precio, p.Nombre as NombreProveedor
         FROM Stock s
         JOIN Proveedores p ON s.Proveedor = p.Cod_prov
-        WHERE s.Codigo_repuesto = %s
-    """, (codigo_repuesto,))
-    repuesto = cursor.fetchone()
+        WHERE s.Codigo_repuesto LIKE %s
+           OR s.Descripcion LIKE %s
+           OR p.Nombre LIKE %s
+    """, (f"%{q}%", f"%{q}%", f"%{q}%"))
+    else:
+        cursor.execute("""
+        SELECT s.Codigo_repuesto, s.Descripcion, s.Cant_rep_libre, s.Cant_rep_total, 
+               s.Proveedor, s.Precio, p.Nombre as NombreProveedor
+        FROM Stock s
+        JOIN Proveedores p ON s.Proveedor = p.Cod_prov
+    """)
+
+    repuesto = cursor.fetchall()
+
 
     # Obtener proveedores para el formulario
     cursor.execute("SELECT Cod_prov, Nombre FROM Proveedores")
@@ -562,6 +661,7 @@ def editar_repuesto(request, codigo_repuesto):
         "repuesto": repuesto,
         "proveedores": proveedores
     })
+
 
 def eliminar_repuesto(request, codigo_repuesto):
     if not request.COOKIES.get("usuario"):
